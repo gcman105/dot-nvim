@@ -1,0 +1,12 @@
+{
+    "languageserver": {
+    "elmLS": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"]
+    }
+  },
+  "codeLens.enable": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": false
+}
