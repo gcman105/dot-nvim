@@ -27,8 +27,8 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'honza/vim-snippets'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 "Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
@@ -222,7 +222,7 @@ cnoremap W! w !sudo tee % >/dev/null   " sudo write this
 cnoremap jj <esc>
 
 " Global mode key mappings
-map <Leader><Leader> <Plug>(easymotion-bd-W)
+map <Leader><Leader> <Plug>(easymotion-prefix)
 "map <Leader>m <Plug>(easymotion-prefix)
 
 " Normal mode key mappings
@@ -258,6 +258,10 @@ nnoremap <Leader>1 :only<CR>
 nnoremap <Leader>et :edit ~/.tmux.conf<CR>
 nnoremap <Leader>ev :edit $MYVIMRC<CR>
 nnoremap <Leader>ez :edit ~/.zshrc<CR>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nmap <Leader>g[ <Plug>(coc-diagnostic-prev)
 nmap <Leader>g] <Plug>(coc-diagnostic-next)
 nmap <Leader>gd <Plug>(coc-definition)
@@ -316,26 +320,6 @@ xmap <leader>f  <Plug>(coc-format-selected) " Formatting selected code.
 xmap <silent> <TAB> <Plug>(coc-range-select)
 xmap af <Plug>(coc-funcobj-a)
 xmap if <Plug>(coc-funcobj-i)
-
-nnoremap <silent> <Leader>b :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
-
-nnoremap <silent> <Leader>f :call fzf#run({
-\   'right': winwidth('.') / 2,
-\   'sink':  'vertical botright split' })<CR>
-
-nnoremap <silent> <Leader>C :call fzf#run({
-\   'source':
-\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-\   'sink':    'colo',
-\   'options': '+m',
-\   'left':    30
-\ })<CR>
 
 " Insert mode key mappings
 inoremap <c-l> <space>=><space>  " Insert a hash rocket with <c-l>
