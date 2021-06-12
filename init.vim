@@ -32,6 +32,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 "Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
+"Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree'
@@ -243,39 +244,34 @@ nnoremap <F9> :Black<CR>
 nnoremap <Leader> :WhichKey '<Space>'<CR>
 nmap <Leader>,a <Plug>(coc-codeaction-selected)     " Applying codeAction to the selected region.
 nnoremap <Leader>,c :<C-u>CocList commands<cr>
+nmap <Leader>,d <Plug>(coc-definition)
 nnoremap <Leader>,e :<C-u>CocCommand explorer<CR>
 nmap <Leader>,f <Plug>(coc-format-selected)         " Formatting selected code.
 nnoremap <Leader>,g :<C-u>CocList diagnostics<cr>
 nmap <Leader>,i <Plug>(coc-implementation)
+nnoremap <Leader>,j :<C-u>CocNext<CR>
+nnoremap <Leader>,k :<C-u>CocPrev<CR>
 nmap <Leader>,l <Plug>(coc-codeaction)              " Remap keys for applying codeAction to the current line.
 nmap <Leader>,n <Plug>(coc-rename)                  " Symbol renaming.
 nnoremap <Leader>,o :<C-u>CocList outline<cr>
 nnoremap <Leader>,p :<C-u>CocListResume<CR>
+nmap <Leader>,r <Plug>(coc-references)
 nnoremap <Leader>,s :<C-u>CocList -I symbols<cr>
 nmap <Leader>,t <Plug>(coc-range-select)
 nmap <Leader>,x <Plug>(coc-fix-current)             " Apply AutoFix to problem on the current line.
+nmap <Leader>,y <Plug>(coc-type-definition)
+nmap <Leader>,[ <Plug>(coc-diagnostic-prev)
+nmap <Leader>,] <Plug>(coc-diagnostic-next)
 nnoremap <Leader>1 :only<CR>
+nnoremap <leader>b <cmd>Telescope builtin<cr>
 nnoremap <Leader>et :edit ~/.tmux.conf<CR>
 nnoremap <Leader>ev :edit $MYVIMRC<CR>
 nnoremap <Leader>ez :edit ~/.zshrc<CR>
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nmap <Leader>g[ <Plug>(coc-diagnostic-prev)
-nmap <Leader>g] <Plug>(coc-diagnostic-next)
-nmap <Leader>gd <Plug>(coc-definition)
-nnoremap <Leader>gg :GFiles<CR>
-nnoremap <Leader>gj :<C-u>CocNext<CR>
-nnoremap <Leader>gk :<C-u>CocPrev<CR>
+nnoremap <Leader>gg <cmd>Telescope git_files<cr>
 nnoremap <Leader>gl :Gist -l<CR>
 nnoremap <Leader>gp :Gist<CR>
-nmap <Leader>gr <Plug>(coc-references)
-nmap <Leader>gy <Plug>(coc-type-definition)
-nnoremap <Leader>h :History<CR>
 nnoremap <Leader>i :noautocmd vimgrep /TODO/j **/*.py<CR>:cw<CR>
 nnoremap <Leader>j :jumps<cr>
-nnoremap <Leader>mm :marks<CR>
 nmap <Leader>mp <Plug>MarkdownPreviewToggle
 nnoremap <Leader>n :NnnPicker %:p:h<cr>
 nnoremap <silent><Leader>qc :cclose<cr>                 " Close the Quickfix window.
@@ -284,7 +280,23 @@ nnoremap <Leader>qq :quit<CR>                           " Quit VIM
 nnoremap <Leader>st :so ~/.tmux.conf<CR>
 nnoremap <Leader>sv :so $MYVIMRC<CR>
 nnoremap <Leader>sz :so ~/.zshrc<CR>
-nnoremap <Leader>th :TSEnableAll highlight<CR>:e!<cr>
+nnoremap <leader>ta <cmd>Telescope current_buffer_fuzzy_find<cr>
+nnoremap <leader>tb <cmd>Telescope buffers<cr>
+nnoremap <leader>tc <cmd>Telescope commands<cr>
+nnoremap <leader>td <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>tf <cmd>Telescope find_files<cr>
+nnoremap <leader>tg <cmd>Telescope live_grep<cr>
+nnoremap <leader>ti <cmd>Telescope lsp_implementations<cr>
+nnoremap <leader>th <cmd>Telescope help_tags<cr>
+nnoremap <leader>tk <cmd>Telescope keymaps<cr>
+nnoremap <leader>tm <cmd>Telescope marks<cr>
+nnoremap <leader>tp <cmd>Telescope file_browser<cr>
+nnoremap <leader>tq <cmd>Telescope quickfix<cr>
+nnoremap <leader>tr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>ts <cmd>Telescope grep_string<cr>
+nnoremap <leader>tt <cmd>Telescope treesitter<cr>
+nnoremap <leader>tx <cmd>Telescope lsp_code_actions<cr>
+nnoremap <Leader>tz :TSEnableAll highlight<CR>:e!<cr>
 nnoremap <Leader>u :UndotreeShow<CR>
 nnoremap <Leader>v :Vifm . .<CR>
 nnoremap <Left> :cpf<CR>
@@ -347,6 +359,17 @@ if exists('*complete_info')
 else
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
+
+" }}} end of Keyboard mapping stuff ----------------------
+
+
+
+" FZF stuff {{{2 -------------------------------------------------------------
+lua << EOF
+require('telescope').setup{
+
+}
+EOF
 
 " }}} end of Keyboard mapping stuff ----------------------
 
