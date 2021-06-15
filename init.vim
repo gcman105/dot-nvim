@@ -272,9 +272,9 @@ nnoremap <leader>b <cmd>Telescope builtin<cr>
 nnoremap <Leader>et :edit ~/.tmux.conf<CR>
 nnoremap <Leader>ev :edit $MYVIMRC<CR>
 nnoremap <Leader>ez :edit ~/.zshrc<CR>
+nnoremap <Leader>gf :diffget //2<cr>
 nnoremap <Leader>gg <cmd>Telescope git_files<cr>
-nnoremap <Leader>gh :diffget //2<cr>
-nnoremap <Leader>gl :diffget //3<cr>
+nnoremap <Leader>gj :diffget //3<cr>
 nnoremap <Leader>gs :G<cr>
 nnoremap <Leader>il :Gist -l<CR>
 nnoremap <Leader>ip :Gist<CR>
