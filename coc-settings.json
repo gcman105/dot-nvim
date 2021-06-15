@@ -1,12 +1,23 @@
 {
     "languageserver": {
-    "elmLS": {
-      "command": "elm-language-server",
-      "filetypes": ["elm"],
-      "rootPatterns": ["elm.json"]
-    }
-  },
-  "codeLens.enable": true,
-  "python.linting.pylintEnabled": false,
-  "python.linting.flake8Enabled": false
+        "elmLS": {
+            "command": "elm-language-server",
+            "filetypes": ["elm"],
+            "rootPatterns": ["elm.json"]
+        }
+    },
+    "codeLens.enable": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": false,
+    "tailwindCSS.emmetCompletions": true,
+    "emmet.includeLanguages": {
+        "pug": "html"
+    },
+    "tailwindCSS.includeLanguages": {
+        "pug": "html"
+    },
+    "tailwindCSS.experimental.classRegex": [
+
+
+    ]
 }

@@ -2,18 +2,22 @@
 " Author: Gary C = gcman105 <gary@gcman105.com>
 " https://gcman105.com/
 
-source /Users/gcman105/.config/.secrets
+source /Users/gcman105/dotfiles/.secrets
 
 "-----------------------------------------------------------------------------
 " vim-plug plugins {{{1
 "-----------------------------------------------------------------------------
 " Make sure you use single quotes
 
-if has('nvim')
-  call plug#begin($XDG_CONFIG_HOME.'/nvim/plugged')
-else
-  call plug#begin($XDG_CONFIG_HOME.'/vim/plugged')
+" auto-install vim-plug
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  "autocmd VimEnter * PlugInstall
+  "autocmd VimEnter * PlugInstall | source '~/.config/nvim/init.vim'
 endif
+
+call plug#begin('~/.config/nvim/autoload/plugged')
 
 "Plug 'Shougo/neco-vim',
 "Plug 'Shougo/neoinclude.vim'
@@ -23,15 +27,17 @@ Plug 'cespare/vim-toml'
 Plug 'dNitro/vim-pug-complete'
 Plug 'digitaltoad/vim-pug'
 Plug 'easymotion/vim-easymotion'
+Plug 'fannheyward/telescope-coc.nvim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'honza/vim-snippets'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align', {'on': 'EasyAlign'}
 "Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
+Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree'
@@ -222,8 +228,8 @@ cnoremap W! w !sudo tee % >/dev/null   " sudo write this
 cnoremap jj <esc>
 
 " Global mode key mappings
-map <Leader><Leader> <Plug>(easymotion-bd-W)
-"map <Leader>m <Plug>(easymotion-prefix)
+map <Leader><Leader> <Plug>(easymotion-prefix)
+"nnoremap <Leader>p <Plug>(easymotion-prefix)
 
 " Normal mode key mappings
 "nnoremap 0 ^ " Go to the first non-blank character of a line
@@ -243,35 +249,37 @@ nnoremap <F9> :Black<CR>
 nnoremap <Leader> :WhichKey '<Space>'<CR>
 nmap <Leader>,a <Plug>(coc-codeaction-selected)     " Applying codeAction to the selected region.
 nnoremap <Leader>,c :<C-u>CocList commands<cr>
+nmap <Leader>,d <Plug>(coc-definition)
 nnoremap <Leader>,e :<C-u>CocCommand explorer<CR>
 nmap <Leader>,f <Plug>(coc-format-selected)         " Formatting selected code.
 nnoremap <Leader>,g :<C-u>CocList diagnostics<cr>
 nmap <Leader>,i <Plug>(coc-implementation)
+nnoremap <Leader>,j :<C-u>CocNext<CR>
+nnoremap <Leader>,k :<C-u>CocPrev<CR>
 nmap <Leader>,l <Plug>(coc-codeaction)              " Remap keys for applying codeAction to the current line.
 nmap <Leader>,n <Plug>(coc-rename)                  " Symbol renaming.
 nnoremap <Leader>,o :<C-u>CocList outline<cr>
 nnoremap <Leader>,p :<C-u>CocListResume<CR>
+nmap <Leader>,r <Plug>(coc-references)
 nnoremap <Leader>,s :<C-u>CocList -I symbols<cr>
 nmap <Leader>,t <Plug>(coc-range-select)
 nmap <Leader>,x <Plug>(coc-fix-current)             " Apply AutoFix to problem on the current line.
+nmap <Leader>,y <Plug>(coc-type-definition)
+nmap <Leader>,[ <Plug>(coc-diagnostic-prev)
+nmap <Leader>,] <Plug>(coc-diagnostic-next)
 nnoremap <Leader>1 :only<CR>
+nnoremap <leader>b <cmd>Telescope builtin<cr>
 nnoremap <Leader>et :edit ~/.tmux.conf<CR>
 nnoremap <Leader>ev :edit $MYVIMRC<CR>
 nnoremap <Leader>ez :edit ~/.zshrc<CR>
-nmap <Leader>g[ <Plug>(coc-diagnostic-prev)
-nmap <Leader>g] <Plug>(coc-diagnostic-next)
-nmap <Leader>gd <Plug>(coc-definition)
-nnoremap <Leader>gg :GFiles<CR>
-nnoremap <Leader>gj :<C-u>CocNext<CR>
-nnoremap <Leader>gk :<C-u>CocPrev<CR>
-nnoremap <Leader>gl :Gist -l<CR>
-nnoremap <Leader>gp :Gist<CR>
-nmap <Leader>gr <Plug>(coc-references)
-nmap <Leader>gy <Plug>(coc-type-definition)
-nnoremap <Leader>h :History<CR>
-nnoremap <Leader>i :noautocmd vimgrep /TODO/j **/*.py<CR>:cw<CR>
+nnoremap <Leader>gg <cmd>Telescope git_files<cr>
+nnoremap <Leader>gh :diffget //2<cr>
+nnoremap <Leader>gl :diffget //3<cr>
+nnoremap <Leader>gs :G<cr>
+nnoremap <Leader>il :Gist -l<CR>
+nnoremap <Leader>ip :Gist<CR>
+nnoremap <Leader>it :noautocmd vimgrep /TODO/j **/*.py<CR>:cw<CR>
 nnoremap <Leader>j :jumps<cr>
-nnoremap <Leader>mm :marks<CR>
 nmap <Leader>mp <Plug>MarkdownPreviewToggle
 nnoremap <Leader>n :NnnPicker %:p:h<cr>
 nnoremap <silent><Leader>qc :cclose<cr>                 " Close the Quickfix window.
@@ -280,7 +288,23 @@ nnoremap <Leader>qq :quit<CR>                           " Quit VIM
 nnoremap <Leader>st :so ~/.tmux.conf<CR>
 nnoremap <Leader>sv :so $MYVIMRC<CR>
 nnoremap <Leader>sz :so ~/.zshrc<CR>
-nnoremap <Leader>th :TSEnableAll highlight<CR>:e!<cr>
+nnoremap <leader>ta <cmd>Telescope current_buffer_fuzzy_find<cr>
+nnoremap <leader>tb <cmd>Telescope buffers<cr>
+nnoremap <leader>tc <cmd>Telescope commands<cr>
+nnoremap <leader>td <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>tf <cmd>Telescope find_files<cr>
+nnoremap <leader>tg <cmd>Telescope live_grep<cr>
+nnoremap <leader>ti <cmd>Telescope lsp_implementations<cr>
+nnoremap <leader>th <cmd>Telescope help_tags<cr>
+nnoremap <leader>tk <cmd>Telescope keymaps<cr>
+nnoremap <leader>tm <cmd>Telescope marks<cr>
+nnoremap <leader>tp <cmd>Telescope file_browser<cr>
+nnoremap <leader>tq <cmd>Telescope quickfix<cr>
+nnoremap <leader>tr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>ts <cmd>Telescope grep_string<cr>
+nnoremap <leader>tt <cmd>Telescope treesitter<cr>
+nnoremap <leader>tx <cmd>Telescope lsp_code_actions<cr>
+nnoremap <Leader>tz :TSEnableAll highlight<CR>:e!<cr>
 nnoremap <Leader>u :UndotreeShow<CR>
 nnoremap <Leader>v :Vifm . .<CR>
 nnoremap <Left> :cpf<CR>
@@ -296,18 +320,6 @@ noremap <F2> :set list!<CR>
 noremap <F4> :set hlsearch! hlsearch?<CR>
 noremap <F8> :TagbarToggle<CR>
 noremap <silent> <F3> :set spell!<CR>
-
-" Operator pending mode key mappings
-omap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-
-" Visual and Select mode key mappings
-vnoremap <C-Down> xp`[V`]                               " Bubble multiple lines
-vnoremap <C-Up> xkP`[V`]                                " Bubble multiple lines
-vnoremap <Leader>hv :'<,'>Gist<CR>
-vnoremap <Leader>ib :!align<cr>                         " Align selected lines
-vnoremap <silent>` <nop>
-vnoremap <silent>´ <nop>
 
 " Visual mode key mappings
 xmap <F6> <plug>(QuickScopeToggle)
@@ -432,6 +444,18 @@ let g:coc_filetype_map = {
     \ }
 
 " }}} end of coc stuff -----------------------------------
+
+
+
+" Telescope stuff {{{2 -------------------------------------------------------
+lua << EOF
+require('telescope').setup{
+    require('telescope').load_extension('coc')
+}
+EOF
+
+" }}} end of Telescope mapping stuff ---------------------
+
 
 
 hi! Normal ctermbg=NONE guibg=NONE
