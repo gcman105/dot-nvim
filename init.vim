@@ -19,11 +19,12 @@ endif
 "Plug 'Shougo/neoinclude.vim'
 Plug 'SirVer/ultisnips'
 Plug 'arcticicestudio/nord-vim'
+source ~/.config/nvim/plugins/gruvbox.vim
 Plug 'cespare/vim-toml'
 Plug 'dNitro/vim-pug-complete'
 Plug 'digitaltoad/vim-pug'
 Plug 'easymotion/vim-easymotion'
-Plug 'gruvbox-community/gruvbox'
+Plug 'fannheyward/telescope-coc.nvim'
 Plug 'honza/vim-snippets'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jiangmiao/auto-pairs'
@@ -40,25 +41,22 @@ Plug 'mcchrish/nnn.vim'
 Plug 'mhinz/vim-startify'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'neovim/nvim-lspconfig'
+Plug 'noahfrederick/vim-laravel'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+source ~/.config/nvim/plugins/telescope.vim
 "Plug 'posva/vim-vue'
-Plug 'psf/black', { 'tag': '19.10b0' }
+"Plug 'psf/black'
 "Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
-Plug 'rust-lang/rust.vim'
+source ~/.config/nvim/plugins/rust.vim
 Plug 'scrooloose/nerdcommenter'
-"Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 Plug 'liuchengxu/vim-which-key'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+source ~/.config/nvim/plugins/harpoon.vim
+source ~/.config/nvim/plugins/treesitter.vim
 Plug 'nvim-treesitter/playground'
 Plug 'unblevable/quick-scope'
 Plug 'vifm/vifm.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-utils/vim-man'
@@ -82,6 +80,11 @@ call plug#end()
 
 " }}} end of vim-plug plugins ------------------------------------------------
 
+source ~/.config/nvim/plugins/airline.vim
+source ~/.config/nvim/plugins/fugitive.vim
+source ~/.config/nvim/plugins/repeat.vim
+source ~/.config/nvim/plugins/surround.vim
+"source ~/.config/nvim/plugins/hop.vim
 
 
 "-----------------------------------------------------------------------------
@@ -222,9 +225,12 @@ syntax on
 cnoremap W! w !sudo tee % >/dev/null   " sudo write this
 cnoremap jj <esc>
 
-" Global mode key mappings
+" Globalsymotionsymotion-prefix)-prefix) mode key mappings
 map <Leader><Leader> <Plug>(easymotion-prefix)
-"map <Leader>m <Plug>(easymotion-prefix)
+"map <Leader>z <Plug>(easymotion-prefix)
+
+" Allow gf to open nonexistant files
+map gf :edit <cfile><cr>
 
 " Normal mode key mappings
 "nnoremap 0 ^ " Go to the first non-blank character of a line
@@ -241,17 +247,24 @@ nnoremap <F5> @@|                               " Map Enter key to run last macr
 nnoremap <F6> <plug>(QuickScopeToggle)
 nnoremap <F7> :call LanguageClient_contextMenu()<CR>
 nnoremap <F9> :Black<CR>
+nnoremap J mzJ'z
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap Y y$
 nnoremap <Leader> :WhichKey '<Space>'<CR>
 nmap <Leader>,a <Plug>(coc-codeaction-selected)     " Applying codeAction to the selected region.
+nmap <Leader>,b <Plug>(coc-format-selected)         " Formatting selected code.
 nnoremap <Leader>,c :<C-u>CocList commands<cr>
 nmap <Leader>,d <Plug>(coc-definition)
 nnoremap <Leader>,e :<C-u>CocCommand explorer<CR>
-nmap <Leader>,f <Plug>(coc-format-selected)         " Formatting selected code.
+nnoremap <Leader>,f :call CocAction('format')<cr>
 nnoremap <Leader>,g :<C-u>CocList diagnostics<cr>
+nnoremap <Leader>,h :lua require("harpoon.mark").add_file()<cr>
 nmap <Leader>,i <Plug>(coc-implementation)
 nnoremap <Leader>,j :<C-u>CocNext<CR>
 nnoremap <Leader>,k :<C-u>CocPrev<CR>
 nmap <Leader>,l <Plug>(coc-codeaction)              " Remap keys for applying codeAction to the current line.
+nnoremap <Leader>,m :lua require("harpoon.ui").toggle_quick_menu()<cr>
 nmap <Leader>,n <Plug>(coc-rename)                  " Symbol renaming.
 nnoremap <Leader>,o :<C-u>CocList outline<cr>
 nnoremap <Leader>,p :<C-u>CocListResume<CR>
@@ -262,7 +275,11 @@ nmap <Leader>,x <Plug>(coc-fix-current)             " Apply AutoFix to problem o
 nmap <Leader>,y <Plug>(coc-type-definition)
 nmap <Leader>,[ <Plug>(coc-diagnostic-prev)
 nmap <Leader>,] <Plug>(coc-diagnostic-next)
-nnoremap <Leader>1 :only<CR>
+nnoremap <Leader>1 :lua require("harpoon.ui").nav_file(1)<cr>
+nnoremap <Leader>2 :lua require("harpoon.ui").nav_file(2)<cr>
+nnoremap <Leader>3 :lua require("harpoon.ui").nav_file(3)<cr>
+nnoremap <Leader>4 :lua require("harpoon.ui").nav_file(4)<cr>
+nnoremap <Leader>5 :lua require("harpoon.ui").nav_file(5)<cr>
 nnoremap <leader>b <cmd>Telescope builtin<cr>
 nnoremap <Leader>et :edit ~/.tmux.conf<CR>
 nnoremap <Leader>ev :edit $MYVIMRC<CR>
@@ -337,7 +354,12 @@ xmap if <Plug>(coc-funcobj-i)
 inoremap <c-l> <space>=><space>  " Insert a hash rocket with <c-l>
 inoremap <silent> <F3> <C-O>:set spell!<CR>
 inoremap <silent><expr> <c-space> coc#refresh() " Use <c-space> to trigger completion.
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
 inoremap jj <esc>
+"inoremap <leader>j :m .+1<CR>==
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -364,14 +386,16 @@ endif
 
 
 
-" FZF stuff {{{2 -------------------------------------------------------------
+"  Telescope stuff {{{2 ------------------------------------------------------
+
 lua << EOF
 require('telescope').setup{
-
+  require('telescope').load_extension('fzf'),
+  require('telescope').load_extension('coc')
 }
 EOF
 
-" }}} end of Keyboard mapping stuff ----------------------
+" }}} end of Telescope stuff -----------------------------
 
 
 
